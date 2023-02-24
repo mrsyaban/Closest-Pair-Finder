@@ -1,6 +1,19 @@
+class point:
+    def __init__(self, dim : int, value : list[int]):
+        self.dim = dim
+        self.val = value
 
-def euclidDist(point1, point2):
-    return (((point1[0]-point2[0])**2) + ((point1[1]-point2[1])**2) + ((point1[2]-point2[2])**2))**0.5
+    def __str__(self):
+        return "{0} - {1}".format(self.dim, self.val)
+    
+    def __sub__(self, other):
+        return point(self.dim, [self.val[i]-other.val[i] for i in range(min(self.dim, other.dim))])
+
+
+def euclidDist(p1 : point, p2 : point) -> float:
+    res : int = 0
+    for i in  range(p1.dim):
+        res += ()**2
 
 def divCon(array):
     dump = [[0,0] for i in range(len(array))]
@@ -10,8 +23,8 @@ def divCon(array):
 
 array = [[3,4,5], [1,9,2], [7,6,5], [1, 5, 4]]
 
-for i in range(len(array)):
-    for j in range(i+1,len(array)):
-        print(i,j, euclidDist(array[i], array[j]))
-
-
+A = point(3, [1,3,4])
+B = point(3, [2,5,0])
+C = A - B
+D = C - A
+print(C, D)
