@@ -2,26 +2,13 @@ from dataType import point, couple
 from bruteForce import bruteForce
 import numpy as np
 
-#debug
-import time as t
-import random as rand
-
-def SStripCase(tempDist : couple, points : list[point], left_part : list[point], right_part : list[point]) -> couple:
-    mid : int = (left_part[-1].value[0] - right_part[0].value[0]) // 2
-
-    strip : list[point] = np.empty((0), dtype=point)
-
-    for i in range(len(points)):
-        if (mid - tempDist.distance <= points[i].value[0] <= mid + tempDist.distance):
-            strip = np.append(strip, points[i])
-    if (len(strip) > 1):
-        distStrip : couple = bruteForce(strip)
-        if (distStrip < tempDist):
-            tempDist = distStrip
-    
-    return tempDist
 
 def divideConquer(points : list[point]) -> couple:
+    """
+    points telah terurut berdasarkan x1
+    Mengembalikan 2 titik terdekat dalam points
+    menggunakan algoritma Divide and Conquer
+    """
     n : int  = len(points)
 
     if (n <= 2):
@@ -37,49 +24,38 @@ def divideConquer(points : list[point]) -> couple:
         left_part = points[:n//2]
         right_part = points[n//2:]
 
-        close1 : couple = divideConquer(left_part)
-        close2 : couple = divideConquer(right_part)
+        closest_left:couple = divideConquer(left_part)
+        closest_right:couple = divideConquer(right_part)
 
-        closeTemp : couple = min(close1, close2)
+        closestTemp:couple = min(closest_left, closest_right)
 
-        mid : int = (left_part[-1].value[0] + right_part[0].value[0]) // 2
+        mid:int = (left_part[-1].value[0] + right_part[0].value[0]) // 2
 
+        # Masukkan semua titik yang berada di jarak +-closestTemp.distance 
+        # dari garis antara left_part dan right part 
         strip = np.empty((0),dtype=point)
         for i in range(n):
-            if (mid - closeTemp.distance <= points[i].value[0] <= mid + closeTemp.distance):
+            if (mid - closestTemp.distance <= points[i].value[0] <= mid + closestTemp.distance):
                 strip = np.append(strip, points[i])
+        
+        # cari couple terdekat dalam strip dengan bruteForce
         if (len(strip) > 1):
             dStrip = bruteForce(strip)
-            if (dStrip < closeTemp):
-                closeTemp = dStrip
+            if (dStrip < closestTemp):
+                closestTemp = dStrip
 
-        return closeTemp
+        return closestTemp
 
-def driver():
-    n = int(input("Masukkan jumlah titik : "))
-    m = int(input("Masukkan dimensi titik : "))
-    # n = 2**10
-    points = np.empty((0), dtype=point)
+def driver() :
+    A1 = point(3,[1,3,6])
+    A2 = point(3,[8,1,2])
+    A3 = point(3,[8,1,1])
 
-    for i in range(n):
-        val = np.empty((m), dtype=int)
-        for j in range(m):
-            val[j] = rand.randint(-1000, 1000)
+    List = [A1, A2, A3]
 
-        points = np.append(points, point(3,val))
+    for titik in List:
+        print(titik)
     
-    startBF = t.time() 
-    print("Brute Force : ", bruteForce(points))
-    stopBF = t.time()
-    print("Waktu BF : ", stopBF-startBF, "\n")
-
-    startDnC = t.time()
-    print("DnC : ", divideConquer(sorted(points)))
-    stopDnC = t.time()
-    print("Waktu DnC : ", stopDnC-startDnC)
-    # pair = divideConquer(List)
-
-    # print(pair)
-
-driver()
-
+    sorted(List)
+    nearestCouple = divideConquer(List)
+    print("nearest by Divide n Conquer : ", nearestCouple)
