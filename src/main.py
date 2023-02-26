@@ -32,13 +32,17 @@ def main():
     points = generateRandom(n, dim)
     
     startBF = t.time() 
-    print("Brute Force : ", bruteForce(points))
+    closestCoupleBF, numBF = bruteForce(points)
     stopBF = t.time()
+    print("Brute Force : ", closestCoupleBF)
+    print("number of euclidean op : ", numBF)
     print("Waktu BF : ", stopBF-startBF, " detik\n")
 
     startDnC = t.time()
-    print("DnC : ", divideConquer(sorted(points)))
+    closestCoupleDnC, numDnC = divideConquer(sorted(points))
     stopDnC = t.time()
+    print("DnC : ", closestCoupleDnC)
+    print("number of Euclidean : ", numDnC)
     print("Waktu DnC : ", stopDnC-startDnC, " detik")
     # pair = divideConquer(List)
 
