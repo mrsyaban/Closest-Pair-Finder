@@ -57,15 +57,16 @@ def divideConquer(points : list[point]) -> couple:
 
 def driver():
     n = int(input("Masukkan jumlah titik : "))
+    m = int(input("Masukkan dimensi titik : "))
     # n = 2**10
     points = np.empty((0), dtype=point)
 
     for i in range(n):
-        x = rand.randint(-1000, 1000)
-        y = rand.randint(-1000, 1000)
-        z = rand.randint(-1000, 1000)
+        val = np.empty((m), dtype=int)
+        for j in range(m):
+            val[j] = rand.randint(-1000, 1000)
 
-        points = np.append(points, point(3,[x,y,z]))
+        points = np.append(points, point(3,val))
     
     startBF = t.time() 
     print("Brute Force : ", bruteForce(points))
