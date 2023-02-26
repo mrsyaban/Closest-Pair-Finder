@@ -1,22 +1,3 @@
-# import random
-# import numpy as np
-
-# x = int(input("Masukkan jumlah titik : "))
-# # Generate 100 random points in a cube with side length 10 centered at (0, 0, 0)
-# points = []
-# for i in range(x):
-#     x = random.uniform(-100, 100)
-#     y = random.uniform(-100, 100)
-#     z = random.uniform(-100, 100)
-#     point = [x, y, z]
-#     points.append(point)
-
-# # Convert list of points to NumPy array
-# points_array = np.array(points)
-
-# for i in range(len(points)) :
-#     print(points[i])
-
 import numpy as np
 import random
 import math
@@ -97,15 +78,15 @@ def nearestBruteForce(points: list[point]):
 
     return minDis
 
-def main():
+def D3main():
     n = int(input("Masukkan jumlah titik : "))
     # n = 2**10
     points = np.empty((0), dtype=point)
 
     for i in range(n):
-        x = random.randint(-1000, 1000)
-        y = random.randint(-1000, 1000)
-        z = random.randint(-1000, 1000)
+        x = random.uniform(-10**6, 10**6)
+        y = random.uniform(-10**6, 10**6)
+        z = random.uniform(-10**6, 10**6)
 
         points = np.append(points, point(x,y,z))
 
@@ -119,8 +100,6 @@ def main():
     stopDnC = time.time()
     print("Waktu DnC : ", stopDnC-startDnC)
 
-
-main()
 
 # # Show the plot
 # # plt.show()
