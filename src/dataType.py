@@ -6,7 +6,15 @@ class point:
         self.value = val
 
     def __str__(self):
-        return "{0}".format(self.value)
+        res:str = "" 
+        for i in range(len(self.val)):
+            if (i == 0):
+                res += ("(" + str(self.val[i]) + ", ")
+            elif (i == len(self.val) - 1) :
+                res += (str(self.val[i]) + ")\n")
+            else :
+                res += (str(self.val[i]) + ", ")
+        return res
     
     def __lt__(self, other):
         return self.value[0] < other.value[0]
