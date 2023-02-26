@@ -3,7 +3,9 @@ import numpy as np
 
 class IO :
 
-    number = 0; 
+    number = 0
+    dimensi = 0
+    mode = 0
 
     # Konstruktor
     def __init__(self):
@@ -14,7 +16,17 @@ class IO :
         inValid = True
         while (inValid):
             try:
-                self.number = int(input("Masukan Jumlah Titik : "))
+                self.number = int(input("Masukan Jumlah Titik  : "))
+            except ValueError:
+                print("Masukan harus bertipe integer")
+            else:
+                inValid = False
+                
+    def set_dimensi(self):
+        inValid = True
+        while (inValid):
+            try:
+                self.number = int(input("Masukan Dimensi Titik : "))
             except ValueError:
                 print("Masukan harus bertipe integer")
             else:
@@ -22,13 +34,40 @@ class IO :
 
     # print landing page
     def landing(self):
-        print("LANDING PAGE")
+        print("""
+ (             )    (   (       )     )     )  
+  )\ )       ( /(    )\ ))\ ) ( /(  ( /(  ( /(  
+ (()/(    (  )\())  (()/(()/( )\()) )\()) )\()) 
+  /(_))   )\((_)\    /(_))(_)|(_)\|((_)\ ((_)\  
+ (_))_ _ ((_) ((_)  (_))(_))  _((_)_ ((_)_ ((_) 
+ |   \| | | |/ _ \  | _ \_ _||_  /| |/ /\ \ / / 
+ | |) | |_| | (_) | |   /| |  / /   ' <  \ V /  
+ |___/ \___/ \___/  |_|_\___|/___| _|\_\  |_|   
+ CLOSEST PAIR FINDER==========================""")
 
     # menampilkan hasil
     # result = (n, arrayOfPoint, runtime, closestPair)
     def printResult(self, result): 
         print("HASIL")
         self.display3D(result[1])
+    
+    def ask_next(self):
+        inValid = True
+        while (inValid):
+            if (self.dimensi == 3):
+                print("1. Generate titik terdekat")
+                print("2. Visualisasi titik dalam bidang 3D")
+                print("0. Akhiri Program")
+            else:
+                print("1. Generate titik terdekat")
+                print("0. Akhiri Program")
+            self.mode = int(input("Pilih untuk melanjutkan program : "))
+            if (self.dimensi == 3 and 0 <= self.mode <= 2):
+                inValid = False
+            elif (0 <= self.mode <= 1):
+                inValid = False
+            else:
+                print("Masukan salah silakan masukkan ulang!")
 
     # visualisasi 3D 
     def display3D(self, arrayOfPoint):

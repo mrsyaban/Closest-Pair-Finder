@@ -6,21 +6,6 @@ import numpy as np
 import time as t
 import random as rand
 
-def SStripCase(tempDist : couple, points : list[point], left_part : list[point], right_part : list[point]) -> couple:
-    mid : int = (left_part[-1].value[0] - right_part[0].value[0]) // 2
-
-    strip : list[point] = np.empty((0), dtype=point)
-
-    for i in range(len(points)):
-        if (mid - tempDist.distance <= points[i].value[0] <= mid + tempDist.distance):
-            strip = np.append(strip, points[i])
-    if (len(strip) > 1):
-        distStrip : couple = bruteForce(strip)
-        if (distStrip < tempDist):
-            tempDist = distStrip
-    
-    return tempDist
-
 def divideConquer(points : list[point]) -> couple:
     n : int  = len(points)
 
@@ -46,7 +31,7 @@ def divideConquer(points : list[point]) -> couple:
 
         strip = np.empty((0),dtype=point)
         for i in range(n):
-            if (mid - closeTemp.distance <= points[i].value[0] <= mid + closeTemp.distance):
+            if (mid - closeTemp.distance < points[i].value[0] < mid + closeTemp.distance):
                 strip = np.append(strip, points[i])
         if (len(strip) > 1):
             dStrip = bruteForce(strip)
@@ -56,7 +41,7 @@ def divideConquer(points : list[point]) -> couple:
         return closeTemp
 
 def driver():
-    n = int(input("Masukkan jumlah titik : "))
+    n = int(input("Masukkan jumlah titik  : "))
     m = int(input("Masukkan dimensi titik : "))
     # n = 2**10
     points = np.empty((0), dtype=point)
@@ -66,7 +51,7 @@ def driver():
         for j in range(m):
             val[j] = rand.randint(-1000, 1000)
 
-        points = np.append(points, point(3,val))
+        points = np.append(points, point(m,val))
     
     startBF = t.time() 
     print("Brute Force : ", bruteForce(points))
