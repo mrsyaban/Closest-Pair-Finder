@@ -1,6 +1,4 @@
-from dataType import point, couple, getDistance
-from bruteForce import bruteForce
-import numpy as np
+from dataType import point, couple
 
 def isNeed(p1: point, p2: point, d:float):
     """

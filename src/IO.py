@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import random as rand
 
 from visual import display3D, display1D, display2D
-from dataType import point, couple
+from dataType import point
 from bruteForce import bruteForce
 from divideConquer import divideConquer
 

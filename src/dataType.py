@@ -1,6 +1,4 @@
 import math
-import numpy as np
-
 class point:
     def __init__(self, dim : int, val : list[int]):
         self.dimensi = dim # dimensi titik
