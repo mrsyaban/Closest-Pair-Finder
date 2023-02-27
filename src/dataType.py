@@ -43,19 +43,19 @@ class couple:
         res:str = ""
         for i in range(len(self.point1.value)):
             if (i == 0):
-                res += ("(" + str(self.point1.value[i]) + ", ")
+                res += "({:.3f}, ".format( self.point1.value[i])
             elif (i == len(self.point1.value) - 1) :
-                res += (str(self.point1.value[i]) + ")")
+                res += "{:.3f})".format(self.point1.value[i])
             else :
-                res += (str(self.point1.value[i]) + ", ")
+                res += "{:.3f}, ".format(self.point1.value[i])
         res += " - "
         for i in range(len(self.point2.value)):
             if (i == 0):
-                res += ("(" + str(self.point2.value[i]) + ", ")
+                res += "({:.3f}, ".format(self.point2.value[i])
             elif (i == len(self.point2.value) - 1) :
-                res += (str(self.point2.value[i]) + ")")
+                res += "{:.3f})".format(self.point2.value[i])
             else :
-                res += (str(self.point2.value[i]) + ", ")
+                res += "{:.3f}, ".format(self.point2.value[i])
         return res
     
 def getDistance(p : point, q : point, dim : int) -> float:

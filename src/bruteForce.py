@@ -1,3 +1,5 @@
+import numpy as np
+import random as rand
 from dataType import point, couple 
 
 def bruteForce(points : list[point]) -> couple:
@@ -17,14 +19,19 @@ def bruteForce(points : list[point]) -> couple:
     return closestPair, numEuclidean
 
 def driver():
-    A1 = point(3,[1,3,6])
-    A2 = point(3,[8,1,2])
-    A3 = point(3,[8,1,1])
+    # 100 titik 
+    # 3 dimensi
+    points = np.empty((0), dtype=point)
 
-    List = [A1, A2, A3]
+    for i in range(100):
+        val = np.empty((3), dtype=float)
+        for j in range(3):
+            val[j] = rand.uniform(-1000, 1000)
+            print(val[j], end=" ")
+        points = np.append(points, point(3, val))
 
-    for titik in List:
+    for titik in points:
         print(titik)
     
-    nearestCouple = bruteForce(List)
+    nearestCouple, _ = bruteForce(points)
     print("nearest by BruteForce : ", nearestCouple)

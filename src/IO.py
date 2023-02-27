@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random as rand
 
-from visual import display3D
+from visual import display3D, display1D, display2D
 from dataType import point, couple
 from bruteForce import bruteForce
 from divideConquer import divideConquer
@@ -44,7 +44,7 @@ class IO :
         inValid = True
         while (inValid):
             try:
-                self.dimensi = int(input("        Dimension : "))
+                self.dimensi = int(input("        Dimension         : "))
             except ValueError:
                 print("        Masukan harus bertipe integer")
             else:
@@ -70,7 +70,7 @@ class IO :
         points = np.empty((0), dtype=point)
 
         for i in range(self.number):
-            val = np.empty((self.dimensi), dtype=int)
+            val = np.empty((self.dimensi), dtype=float)
             for j in range(self.dimensi):
                 val[j] = rand.uniform(-1000, 1000)
             points = np.append(points, point(self.dimensi, val))
@@ -108,16 +108,16 @@ class IO :
         inValid = True
         while (inValid):
             print("\n        ===========================================")
-            if (self.dimensi == 3):
+            if (self.dimensi <= 3):
                 print("        0. End Program")
                 print("        1. Generate Closest Pair")
-                print("        2. Visualize points in 3D Diagram")
+                print("        2. Visualize points in Scatter Diagram")
             else:
                 print("        0. End Program")
                 print("        1. Generate Closest Pair")
             print("        ===========================================")
             self.mode = int(input("        Pilih untuk melanjutkan program : "))
-            if (self.dimensi == 3 and 0 <= self.mode <= 2):
+            if (self.dimensi <= 3 and 0 <= self.mode <= 2):
                 inValid = False
             elif (0 <= self.mode <= 1):
                 inValid = False
@@ -125,4 +125,9 @@ class IO :
                 print("        Masukan salah silakan masukkan ulang!")
     
     def visual(self):
-        display3D(self.visualComp1, self.visualComp2)
+        if (self.dimensi == 3):
+            display3D(self.visualComp1, self.visualComp2)
+        elif(self.dimensi == 2):
+            display2D(self.visualComp1, self.visualComp2)
+        else:
+            display1D(self.visualComp1, self.visualComp2)

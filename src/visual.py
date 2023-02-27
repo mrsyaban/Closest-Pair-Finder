@@ -22,7 +22,39 @@ def display3D(arrayOfPoint : list[point], pair : couple):
     plot.set_zlabel('SUMBU-Z')
     plt.show()
 
-def driver():
+def display2D(arrayOfPoint : list[point], pair : couple):
+    fig = plt.figure()
+
+    plot = fig.add_subplot()
+    
+    for point in arrayOfPoint:
+        xp = point.value[0]
+        yp = point.value[1]
+        if (point == pair.point1 or point == pair.point2):
+            plot.scatter(xp,yp, marker='o', c='red')
+        else:
+            plot.scatter(xp,yp, marker='o', c='blue')
+
+    plot.set_xlabel('SUMBU-X')
+    plot.set_ylabel('SUMBU-Y')
+    plt.show()
+
+def display1D(arrayOfPoint : list[point], pair : couple):
+    fig = plt.figure()
+
+    plot = fig.add_subplot()
+    
+    for point in arrayOfPoint:
+        xp = point.value[0]
+        if (point == pair.point1 or point == pair.point2):
+            plot.scatter(xp, marker='o', c='red')
+        else:
+            plot.scatter(xp, marker='o', c='blue')
+
+    plot.set_xlabel('SUMBU-X')
+    plt.show()
+
+def driver3D():
     A1 : point = point(3, [4,5,6])
     A2 : point = point(3, [4,6,6])
     A3 : point = point(3, [7,5,6])
