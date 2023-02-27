@@ -1,8 +1,3 @@
-# if __name__ == "__main__":
-#     l = [1,2,3]
-
-#     print(l**2)
-
 from dataType import point, couple
 from bruteForce import bruteForce
 from divideConquer import divideConquer
@@ -28,7 +23,7 @@ def generateRandom(n:int, dim:int):
 def main():
     n:int = int(input("Masukkan jumlah titik : "))
     dim:int = int(input("Masukkan dimensi titik : "))
-    # n = 2**10
+
     points = generateRandom(n, dim)
     
     startBF = t.time() 
@@ -44,8 +39,3 @@ def main():
     print("DnC : ", closestCoupleDnC)
     print("number of Euclidean : ", numDnC)
     print("Waktu DnC : ", stopDnC-startDnC, " detik")
-    # pair = divideConquer(List)
-
-    # print(pair)
-
-main()

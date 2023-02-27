@@ -2,6 +2,9 @@ import numpy as np
 import random
 import math
 import time
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
 
 class point:
     def __init__(self, x, y, z):
@@ -44,24 +47,24 @@ def nearestPoints(points: list[point]):
 
         mid: int = (left_part[-1].x + right_part[0].x) // 2
 
-        strip = np.empty((0), dtype=point)
-        for i in range(n):
-            if ( mid-d <= points[i].x <= mid+d ):
-                strip = np.append(strip, points[i])
+        # strip = np.empty((0), dtype=point)
+        # for i in range(n):
+        #     if ( mid-d <= points[i].x <= mid+d ):
+        #         strip = np.append(strip, points[i])
 
-        if (len(strip)> 1):
-            dStrip = nearestBruteForce(strip)
-            if (dStrip < d):
-                d = dStrip
+        # if (len(strip)> 1):
+        #     dStrip = nearestBruteForce(strip)
+        #     if (dStrip < d):
+        #         d = dStrip
 
-        # for left_point in left_part:
-        #     if (abs(mid-left_point.x) <= d) :
-        #         for right_point in right_part :
-        #             if (abs(mid-right_point.x) <= d) :
-        #                 if not(abs(left_point.x - right_point.x) > d or abs(left_point.y - right_point.y) > d or abs(left_point.z - right_point.z) > d )  :
-        #                     newD = point.getDistance(left_point, right_point)
-        #                     if (d > newD) :
-        #                         d = newD
+        for left_point in left_part:
+            if (abs(mid-left_point.x) <= d) :
+                for right_point in right_part :
+                    if (abs(mid-right_point.x) <= d) :
+                        if not(abs(left_point.x - right_point.x) > d or abs(left_point.y - right_point.y) > d or abs(left_point.z - right_point.z) > d )  :
+                            newD = point.getDistance(left_point, right_point)
+                            if (d > newD) :
+                                d = newD
 
 
         return d
@@ -70,12 +73,13 @@ def nearestPoints(points: list[point]):
 
 def nearestBruteForce(points: list[point]):
     minDis:float = point.getDistance(points[0], points[1])
-
+ 
     for i in range(len(points)):
         for j in range(i+1, len(points)):
             if (minDis > point.getDistance(points[i], points[j])):
                 minDis = point.getDistance(points[i], points[j])
-
+            
+                
     return minDis
 
 def D3main():
@@ -100,7 +104,28 @@ def D3main():
     stopDnC = time.time()
     print("Waktu DnC : ", stopDnC-startDnC)
 
+    listx = np.empty((0), dtype=float)
+    listy = np.empty((0), dtype=float)
+    listz = np.empty((0), dtype=float)
+    for titik in points:
+        listx = np.append(listx, titik.x)
+        listy = np.append(listy, titik.y)
+        listz = np.append(listz, titik.z)
 
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Add the data as scatter plot
+    ax.scatter(listx, listy, listz, c="red")
+
+    # Set labels and title
+    ax.set_title('Divide And Conquer Closest Pair')
+
+    # Show the plot
+    plt.show()
+
+
+D3main()
 # # Show the plot
 # # plt.show()
 # for i in range(len(points)):
