@@ -36,11 +36,7 @@ def divideConquer(points : list[point]) -> couple:
         numEuclidean += (tempNumLeft + tempNumRight)
 
         closestTemp:couple = min(closest_left, closest_right)
-
         mid:int = (left_part[-1].value[0] + right_part[0].value[0]) // 2
-
-        # Masukkan semua titik yang berada di jarak +-closestTemp.distance 
-        # dari garis antara left_part dan right part 
 
         for left_point in left_part:
             if (abs(mid-left_point.value[0]) <= closestTemp.distance) :
@@ -51,18 +47,6 @@ def divideConquer(points : list[point]) -> couple:
                             newClosestTemp = couple(left_point, right_point)
                             if (closestTemp > newClosestTemp) :
                                 closestTemp = newClosestTemp
-
-        # strip = np.empty((0),dtype=point)
-        # for i in range(n):
-        #     if (mid - closestTemp.distance <= points[i].value[0] <= mid + closestTemp.distance):
-        #         strip = np.append(strip, points[i])
-        
-        # cari couple terdekat dalam strip dengan bruteForce
-        # if (len(strip) > 1):
-        #     dStrip, numEucBF = bruteForce(strip)
-        #     numEuclidean += numEucBF
-        #     if (dStrip < closestTemp):
-        #         closestTemp = dStrip
 
         return closestTemp, numEuclidean
 

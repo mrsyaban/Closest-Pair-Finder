@@ -17,7 +17,6 @@ def display3D(arrayOfPoint : list[point], pair : couple):
         else:
             plot.scatter(xp,yp,zp, marker='o', c='blue')
 
-    
     plot.set_xlabel('SUMBU-X')
     plot.set_ylabel('SUMBU-Y')
     plot.set_zlabel('SUMBU-Z')

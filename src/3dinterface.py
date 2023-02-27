@@ -57,185 +57,52 @@
 #     mainWindow = MainWindow(root)
 #     root.mainloop()
 
-from tkinter import *
-from PIL import Image, ImageTk
-from tkinter import filedialog
-from tkinter import messagebox
+import tkinter as tk
 
-import numpy as np
-import customtkinter
-
-import time
-
-start = time.time()
-ss=time.time()
-
-customtkinter.set_appearance_mode("Dark")
-customtkinter.set_default_color_theme("dark-blue") 
-
-BACKGROUND_COLOR_OFF = "#7e69a7"
-TOGGLE_COLOR_OFF = "#aaaaff"
-COLOR1_OFF = "#655596"
-COLOR2_OFF = "#57409f"
-BLACK_OFF = "#333333"
-BACKGROUND_COLOR_ON = "#f8f8fa"
-TOGGLE_COLOR_ON = "#d2d4dc"
-COLOR1_ON = "#e5e6eb"
-COLOR2_ON = "#c0c2ce"
-BLACK_ON = "#afafaf"
-BLACK = "black"
-
-
-class App(customtkinter.CTk):
-
-    WIDTH = 1600
-    HEIGHT = 1200
-
-    def __init__(self):
-        super().__init__()
-
-        self.title("Closest Pair in Multidimension")
-        self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
-
-        # ============ create two frames ============
-
-        # configure grid layout (2x1)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_rowconfigure(0, weight=1)
-
-        self.frame_left = customtkinter.CTkFrame(master=self,
-                                                 width=180,
-                                                 corner_radius=0)
-        self.frame_left.grid(row=0, column=0, sticky="nswe")
-
-        self.frame_right = customtkinter.CTkFrame(master=self)
-        self.frame_right.grid(row=0, column=1, sticky="nswe", padx=20, pady=20)
-
-        # ============ frame_left ============
-        # configure grid layout (1x11)
-        self.frame_left.grid_rowconfigure(0, minsize=10)   # empty row with minsize as spacing
-        self.frame_left.grid_rowconfigure(9, weight=1)  # empty row as spacing
-
-        self.label_1 = customtkinter.CTkLabel(master=self.frame_left,
-                                              text="Insert Your DataSet",
-                                              text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_1.grid(row=0, column=0, pady=5, padx=10)
-
-        self.button_1 = customtkinter.CTkButton(master=self.frame_left,
-                                                text="Upload DataSet",
-                                                command=self.open_file_dataset)
-        self.button_1.grid(row=1, column=0, pady=10, padx=20)
-
-        self.label_2 = customtkinter.CTkLabel(master=self.frame_left,
-                                              text="Insert Your Image",
-                                              text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_2.grid(row=2, column=0, pady=5, padx=10)
-
-        self.button_2 = customtkinter.CTkButton(master=self.frame_left,
-                                                text="Upload Image",
-                                                command=self.open_file_image)
-        self.button_2.grid(row=3, column=0, pady=10, padx=20)
-
-        self.switch_1 = customtkinter.CTkSwitch(master=self.frame_left,
-                                                text="Camera",
-                                                command=self.openCam)
-        self.switch_1.grid(row=6, column=0, pady=10, padx=20)
-
-        self.label_mode1 = customtkinter.CTkLabel(master=self.frame_left, text="Choose Camera :")
-        self.label_mode1.grid(row=4, column=0, pady=0, padx=20, sticky="w")
-
-        self.optionmenu_2 = customtkinter.CTkOptionMenu(master=self.frame_left,
-                                                        values=['0', '1', '2', '3'],
-                                                        command=self.change_camera)
-        self.optionmenu_2.grid(row=5, column=0, pady=10, padx=20)
-
-        self.label_3 = customtkinter.CTkLabel(master=self.frame_left,
-                                              text="Execution Time:",
-                                              text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_3.grid(row=7, column=0, pady=5, padx=10)
-
-        self.label_4 = customtkinter.CTkLabel(master=self.frame_left,
-                                              text="00:00:00",
-                                              text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_4.grid(row=8, column=0, pady=5, padx=10)
-
-        self.label_spacing = customtkinter.CTkLabel(master=self.frame_left,
-                                                text="",
-                                                text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_spacing.grid(row=9, column=0, pady=5, padx=10)
-
-        self.button_3 = customtkinter.CTkButton(master=self.frame_left,
-                                                text="",
-                                                width=0,
-                                                height=0)
-        self.button_3.grid(row=10, column=0, pady=10, padx=20)
-
-        self.label_5 = customtkinter.CTkLabel(master=self.frame_left,
-                                              text="Result",
-                                              text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_5.grid(row=11, column=0, pady=5, padx=10)
-        
-
-        self.button_5 = customtkinter.CTkButton(master=self.frame_left,
-                                                text="Download",
-                                                command=self.formating_output_file)
-        self.button_5.grid(row=12, column=0, pady=10, padx=20)
-
-        self.label_mode = customtkinter.CTkLabel(master=self.frame_left, text="Appearance Mode:")
-        self.label_mode.grid(row=13, column=0, pady=0, padx=20, sticky="w")
-
-        self.optionmenu_1 = customtkinter.CTkOptionMenu(master=self.frame_left,
-                                                        values=["Light", "Dark"],
-                                                        command=self.change_appearance_mode)
-        self.optionmenu_1.grid(row=14, column=0, pady=10, padx=20, sticky="w")
-
-        # ============ frame_right ============
-
-        # configure grid layout (3x7)
-        self.frame_right.rowconfigure((0,1), weight=1)
-        self.frame_right.rowconfigure(7, weight=10)
-        self.frame_right.columnconfigure((0, 1), weight=1)
-        self.frame_right.columnconfigure(2, weight=0)
-
-        self.label_title = customtkinter.CTkLabel(master=self.frame_right,
-                                              text="Test Image",
-                                              text_font=("Roboto Medium", -30))  # font name and size in px
-        self.label_title.grid(row=1, column=0, pady=5, padx=10)
-        self.label_title = customtkinter.CTkLabel(master=self.frame_right,
-                                              text="Closest Result",
-                                              text_font=("Roboto Medium", -30))  # font name and size in px
-        self.label_title.grid(row=1, column=1, pady=5, padx=10)
-        
-        self.frame_info1 = customtkinter.CTkFrame(master=self.frame_right)
-        self.frame_info1.grid(row=4, column=0, columnspan=1, rowspan=4, pady=20, padx=20, sticky="nsew")
-        self.image_label1 = customtkinter.CTkLabel(master=self.frame_info1, image=self.photo_input)
-        self.image_label1.place(relx=0.5, rely=0.5, anchor=CENTER)
-        self.frame_info2 = customtkinter.CTkFrame(master=self.frame_right)
-
-        self.frame_info2.grid(row=4, column=1, columnspan=1, rowspan=4, pady=20, padx=20, sticky="nsew")
-        self.image_label2 = customtkinter.CTkLabel(master=self.frame_info2, image=self.photo_closest)
-        self.image_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
-
-        # set default values
-        self.optionmenu_1.set("Light")
-        self.optionmenu_2.set("0")
-
-    def change_appearance_mode(self, new_appearance_mode):
-        customtkinter.set_appearance_mode(new_appearance_mode)
-
-    def on_closing(self, event=0):
-        self.destroy()
-
-    def saveFile(self):
-        # Save file as
-        file = filedialog.asksaveasfile(mode='w', defaultextension=".pdf")
-        if file is None:
-            return
-        self.pdf_file = self.formating_output_file 
-        self.pdf_file.save(file)
+class Calculator:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Calculator")
+        self.result = tk.StringVar()
+        self.result.set("0")
+        self.entry = tk.Entry(master, textvariable=self.result, width=20, font=("Arial", 20), bd=5, justify="right")
+        self.entry.grid(row=0, column=0, columnspan=4, padx=5, pady=5)
+        self.create_buttons()
     
+    def create_buttons(self):
+        buttons = [
+            "7", "8", "9", "/",
+            "4", "5", "6", "*",
+            "1", "2", "3", "-",
+            "0", ".", "=", "+"
+        ]
+        row = 1
+        col = 0
+        for button in buttons:
+            if col == 4:
+                col = 0
+                row += 1
+            tk.Button(self.master, text=button, width=5, height=2, font=("Arial", 20),
+                      command=lambda x=button: self.click_button(x)).grid(row=row, column=col, padx=5, pady=5)
+            col += 1
+    
+    def click_button(self, key):
+        if key == "=":
+            try:
+                result = str(eval(self.result.get()))
+            except:
+                result = "Error"
+            self.result.set(result)
+        elif key == "C":
+            self.result.set("0")
+        elif key == "CE":
+            self.result.set(self.result.get()[:-1])
+        else:
+            if self.result.get() == "0":
+                self.result.set(key)
+            else:
+                self.result.set(self.result.get() + key)
 
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+root = tk.Tk()
+calculator = Calculator(root)
+root.mainloop()

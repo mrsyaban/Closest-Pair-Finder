@@ -1,7 +1,7 @@
+import time as t
 import numpy as np
 import matplotlib.pyplot as plt
-import random
-import time
+import random as rand
 
 from visual import display3D
 from dataType import point, couple
@@ -18,22 +18,25 @@ class IO :
     def __init__(self):
         inValid = True
         while (inValid):
-            print("1. Generate titik terdekat")
-            print("0. Akhiri Program")
-            self.mode = int(input("Pilih untuk melanjutkan program : "))
+            print("""\n
+        ===========================================
+        0. End Program
+        1. Generate Closest Pair
+        ===========================================""")
+            self.mode = int(input("        Enter Command : "))
             if (0 <= self.mode <= 1):
                 inValid = False
             else:
-                print("Masukan salah silakan masukkan ulang!")
+                print("        Masukan salah silakan masukkan ulang!")
     
     # Method input jumlah titik & Skema validasi input
     def set_number(self):
         inValid = True
         while (inValid):
             try:
-                self.number = int(input("Masukan Jumlah Titik  : "))
+                self.number = int(input("\n        Number Of Points  : "))
             except ValueError:
-                print("Masukan harus bertipe integer")
+                print("        Masukan harus bertipe integer")
             else:
                 inValid = False
                 
@@ -41,24 +44,24 @@ class IO :
         inValid = True
         while (inValid):
             try:
-                self.dimensi = int(input("Masukan Dimensi Titik : "))
+                self.dimensi = int(input("        Dimension : "))
             except ValueError:
-                print("Masukan harus bertipe integer")
+                print("        Masukan harus bertipe integer")
             else:
                 inValid = False
 
     # print landing page
     def landing(self):
         print("""
- (             )    (   (       )     )     )  
-  )\ )       ( /(    )\ ))\ ) ( /(  ( /(  ( /(  
- (()/(    (  )\())  (()/(()/( )\()) )\()) )\()) 
-  /(_))   )\((_)\    /(_))(_)|(_)\|((_)\ ((_)\  
- (_))_ _ ((_) ((_)  (_))(_))  _((_)_ ((_)_ ((_) 
- |   \| | | |/ _ \  | _ \_ _||_  /| |/ /\ \ / / 
- | |) | |_| | (_) | |   /| |  / /   ' <  \ V /  
- |___/ \___/ \___/  |_|_\___|/___| _|\_\  |_|   
- CLOSEST PAIR FINDER==========================""")
+        (             )    (   (       )     )     )  
+          )\ )       ( /(    )\ ))\ ) ( /(  ( /(  ( /(  
+         (()/(    (  )\())  (()/(()/( )\()) )\()) )\()) 
+          /(_))   )\((_)\    /(_))(_)|(_)\|((_)\ ((_)\  
+         (_))_ _ ((_) ((_)  (_))(_))  _((_)_ ((_)_ ((_) 
+        |   \| | | |/ _ \  | _ \_ _||_  /| |/ /\ \ / / 
+        | |) | |_| | (_) | |   /| |  / /   ' <  \ V /  
+        |___/ \___/ \___/  |_|_\___|/___| _|\_\  |_|   
+        CLOSEST PAIR FINDER==========================""")
 
     # menampilkan hasil
     # result = (n, arrayOfPoint, runtime, closestPair)
@@ -69,42 +72,57 @@ class IO :
         for i in range(self.number):
             val = np.empty((self.dimensi), dtype=int)
             for j in range(self.dimensi):
-                val[j] = random.uniform(-1000, 1000)
+                val[j] = rand.uniform(-1000, 1000)
             points = np.append(points, point(self.dimensi, val))
-        print("\n\nHASIL GENERATE : ")
-        startBF = time.time() 
-        print("Brute Force : ", bruteForce(points))
-        stopBF = time.time()
-        print("Waktu BF : ", stopBF-startBF, "\n")
 
-        startDnC = time.time()
-        print("DnC : ", divideConquer(sorted(points)))
-        stopDnC = time.time()
-        print("Waktu DnC : ", stopDnC-startDnC)
+        startBF = t.time() 
+        closestCoupleBF, numBF = bruteForce(points)
+        stopBF = t.time()
+        print(f"""
+                         BRUTE FORCE 
+        ===========================================
+        Closest Pair           : {closestCoupleBF}
+        Distance               : {closestCoupleBF.distance}  
+        Number of Euclidean op : {numBF}
+        Execution Time         : {stopBF-startBF} detik\n
+        """)
 
-        print("\n")
+        startDnC = t.time()
+        closestCoupleDnC, numDnC = divideConquer(sorted(points))
+        stopDnC = t.time()
+
+        print(f"""
+                      DIVIDE AND CONQUER 
+        ===========================================
+        Closest Pair           : {closestCoupleDnC}
+        Distance               : {closestCoupleDnC.distance}
+        Number of Euclidean op : {numDnC}
+        Execution Time         : {stopDnC-startDnC} detik\n
+        """)
 
         if (self.dimensi == 3):
             self.visualComp1 = points
-            self.visualComp2 = divideConquer(sorted(points))
+            self.visualComp2= closestCoupleDnC
 
     def ask_next(self):
         inValid = True
         while (inValid):
+            print("\n        ===========================================")
             if (self.dimensi == 3):
-                print("1. Generate titik terdekat")
-                print("2. Visualisasi titik dalam bidang 3D")
-                print("0. Akhiri Program")
+                print("        0. End Program")
+                print("        1. Generate Closest Pair")
+                print("        2. Visualize points in 3D Diagram")
             else:
-                print("1. Generate titik terdekat")
-                print("0. Akhiri Program")
-            self.mode = int(input("Pilih untuk melanjutkan program : "))
+                print("        0. End Program")
+                print("        1. Generate Closest Pair")
+            print("        ===========================================")
+            self.mode = int(input("        Pilih untuk melanjutkan program : "))
             if (self.dimensi == 3 and 0 <= self.mode <= 2):
                 inValid = False
             elif (0 <= self.mode <= 1):
                 inValid = False
             else:
-                print("Masukan salah silakan masukkan ulang!")
+                print("        Masukan salah silakan masukkan ulang!")
     
     def visual(self):
         display3D(self.visualComp1, self.visualComp2)

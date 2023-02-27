@@ -40,7 +40,23 @@ class couple:
         return self.distance < other.distance
 
     def __str__(self):
-        return "{0} - {1} \ndistance : {2}".format(self.point1.value, self.point2.value, self.distance)
+        res:str = ""
+        for i in range(len(self.point1.value)):
+            if (i == 0):
+                res += ("(" + str(self.point1.value[i]) + ", ")
+            elif (i == len(self.point1.value) - 1) :
+                res += (str(self.point1.value[i]) + ")")
+            else :
+                res += (str(self.point1.value[i]) + ", ")
+        res += " - "
+        for i in range(len(self.point2.value)):
+            if (i == 0):
+                res += ("(" + str(self.point2.value[i]) + ", ")
+            elif (i == len(self.point2.value) - 1) :
+                res += (str(self.point2.value[i]) + ")")
+            else :
+                res += (str(self.point2.value[i]) + ", ")
+        return res
     
 def getDistance(p : point, q : point, dim : int) -> float:
     temp : float = 0
