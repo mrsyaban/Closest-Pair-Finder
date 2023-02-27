@@ -3,6 +3,10 @@ from bruteForce import bruteForce
 import numpy as np
 
 def isNeed(p1: point, p2: point, d:float):
+    """
+    return False if there is distance between p1 and p2 
+    in the same axis that greater than d
+    """
     for i in range(p1.dimensi):
         if (abs(p1.value[i] - p2.value[i]) > d):
             return False
@@ -10,9 +14,10 @@ def isNeed(p1: point, p2: point, d:float):
 
 def divideConquer(points : list[point]) -> couple:
     """
-    points telah terurut berdasarkan x1
-    Mengembalikan 2 titik terdekat dalam points
-    menggunakan algoritma Divide and Conquer
+    Initial State : points was sorted by x1
+    return 2 closest point as a couple in points 
+    and number of euclidean distance calculation
+    using divide and conquer algorithm
     """
     n : int  = len(points)
     numEuclidean:int = 0

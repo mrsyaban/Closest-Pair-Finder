@@ -1,11 +1,12 @@
 import tkinter
 import tkinter.messagebox
 import customtkinter
+import numpy as np
+import random as rand
 
 from dataType import point, couple
 from bruteForce import bruteForce
 from divideConquer import divideConquer
-from main import generateRandom
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d import Axes3D
@@ -89,8 +90,14 @@ class App(customtkinter.CTk):
         # self.textbox.place(x=375, y=270, anchor="center")
 
     def run(self):
-        points = generateRandom(int(self.num_entry.get()), int(self.dim_entry.get()))
-        
+        points = np.empty((0), dtype=point)
+
+        for i in range(int(self.num_entry.get())):
+            val = np.empty(int(self.dim_entry.get()), dtype=float)
+            for j in range(int(self.dim_entry.get())):
+                val[j] = rand.uniform(-1000, 1000)
+            points = np.append(points, point(int(self.dim_entry.get()), val))
+
         startBF = t.time() 
         closestCoupleBF, numBF = bruteForce(points)
         stopBF = t.time()

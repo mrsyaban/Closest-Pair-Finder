@@ -4,8 +4,9 @@ from dataType import point, couple
 
 def bruteForce(points : list[point]) -> couple:
     """
-    Mengembalikan 2 titik terdekat dalam points
-    menggunakan algoritma brute force
+    return 2 closest point as a couple in points
+    and number of euclidean distance calculation
+    using brute force algorithm
     """
     closestPair:couple = couple(points[0], points[1])
     numEuclidean:int = 1 

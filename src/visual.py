@@ -4,6 +4,9 @@ from dataType import point, couple
 from bruteForce import bruteForce
 
 def display3D(arrayOfPoint : list[point], pair : couple):
+    """
+    display scatter plot 3D of arrayOfPoint with pair highlighted as red
+    """
     fig = plt.figure()
 
     plot = fig.add_subplot(projection='3d')
@@ -23,6 +26,9 @@ def display3D(arrayOfPoint : list[point], pair : couple):
     plt.show()
 
 def display2D(arrayOfPoint : list[point], pair : couple):
+    """
+    display scatter plot 2D of arrayOfPoint with pair highlighted as red
+    """
     fig = plt.figure()
 
     plot = fig.add_subplot()
@@ -40,6 +46,9 @@ def display2D(arrayOfPoint : list[point], pair : couple):
     plt.show()
 
 def display1D(arrayOfPoint : list[point], pair : couple):
+    """
+    display scatter plot 1D of arrayOfPoint with pair highlighted as red
+    """
     fig = plt.figure()
 
     plot = fig.add_subplot()
@@ -53,6 +62,7 @@ def display1D(arrayOfPoint : list[point], pair : couple):
 
     plot.set_xlabel('SUMBU-X')
     plt.show()
+
 
 def driver3D():
     A1 : point = point(3, [4,5,6])
