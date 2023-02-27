@@ -32,7 +32,8 @@ class couple:
     def __init__(self, p1: point, p2: point):
         self.point1 = p1 # titik pertama
         self.point2 = p2 # titik kedua
-        self.distance = getDistance(p1,p2,p1.dimensi) # jarak antara titik pertama dan kedua
+        self.distance = getDistance(p1,p2,p1.dimensi) 
+        # jarak antara titik pertama dan kedua
     
     def __gt__(self, other):
         # greater than

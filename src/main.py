@@ -16,4 +16,3 @@ if __name__ == "__main__":
         if User.mode == 2:
             User.visual()
             User.ask_next()
-
