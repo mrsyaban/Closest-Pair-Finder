@@ -5,14 +5,16 @@ def bruteForce(points : list[point]) -> couple:
     Mengembalikan 2 titik terdekat dalam points
     menggunakan algoritma brute force
     """
-    closestPair : couple = couple(points[0], points[1])
-
+    closestPair:couple = couple(points[0], points[1])
+    numEuclidean:int = 1 
     for i in range(len(points)):
         for j in range(i+1, len(points)):
-            if (closestPair > couple(points[i], points[j])):
-                closestPair = couple(points[i], points[j])
+            tempCouple = couple(points[i], points[j])
+            numEuclidean += 1
+            if (closestPair > tempCouple):
+                closestPair = tempCouple
 
-    return closestPair
+    return closestPair, numEuclidean
 
 def driver():
     A1 = point(3,[1,3,6])

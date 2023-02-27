@@ -1,7 +1,12 @@
-from dataType import point, couple
+from dataType import point, couple, getDistance
 from bruteForce import bruteForce
 import numpy as np
 
+def isNeed(p1: point, p2: point, d:float):
+    for i in range(p1.dimensi):
+        if (abs(p1.value[i] - p2.value[i]) > d):
+            return False
+    return True
 
 def divideConquer(points : list[point]) -> couple:
     """
@@ -10,22 +15,25 @@ def divideConquer(points : list[point]) -> couple:
     menggunakan algoritma Divide and Conquer
     """
     n : int  = len(points)
-
+    numEuclidean:int = 0
     if (n <= 2):
-        return couple(points[0], points[1])
+        numEuclidean += 1
+        return couple(points[0], points[1]), numEuclidean
     
     elif (n <= 3):
+        numEuclidean += 3
         Couple1 = couple(points[0], points[1])
         Couple2 = couple(points[1], points[2])
         Couple3 = couple(points[0], points[2])
-        return min(Couple1, Couple2, Couple3)
+        return min(Couple1, Couple2, Couple3), numEuclidean
 
     else:
         left_part = points[:n//2]
         right_part = points[n//2:]
 
-        closest_left:couple = divideConquer(left_part)
-        closest_right:couple = divideConquer(right_part)
+        closest_left, tempNumLeft = divideConquer(left_part)
+        closest_right, tempNumRight = divideConquer(right_part)
+        numEuclidean += (tempNumLeft + tempNumRight)
 
         closestTemp:couple = min(closest_left, closest_right)
 
@@ -33,18 +41,30 @@ def divideConquer(points : list[point]) -> couple:
 
         # Masukkan semua titik yang berada di jarak +-closestTemp.distance 
         # dari garis antara left_part dan right part 
-        strip = np.empty((0),dtype=point)
-        for i in range(n):
-            if (mid - closestTemp.distance <= points[i].value[0] <= mid + closestTemp.distance):
-                strip = np.append(strip, points[i])
+
+        for left_point in left_part:
+            if (abs(mid-left_point.value[0]) <= closestTemp.distance) :
+                for right_point in right_part :
+                    if (abs(mid-right_point.value[0]) <= closestTemp.distance) :
+                        if isNeed(left_point, right_point, closestTemp.distance):
+                            numEuclidean += 1
+                            newClosestTemp = couple(left_point, right_point)
+                            if (closestTemp > newClosestTemp) :
+                                closestTemp = newClosestTemp
+
+        # strip = np.empty((0),dtype=point)
+        # for i in range(n):
+        #     if (mid - closestTemp.distance <= points[i].value[0] <= mid + closestTemp.distance):
+        #         strip = np.append(strip, points[i])
         
         # cari couple terdekat dalam strip dengan bruteForce
-        if (len(strip) > 1):
-            dStrip = bruteForce(strip)
-            if (dStrip < closestTemp):
-                closestTemp = dStrip
+        # if (len(strip) > 1):
+        #     dStrip, numEucBF = bruteForce(strip)
+        #     numEuclidean += numEucBF
+        #     if (dStrip < closestTemp):
+        #         closestTemp = dStrip
 
-        return closestTemp
+        return closestTemp, numEuclidean
 
 def driver() :
     A1 = point(3,[1,3,6])
