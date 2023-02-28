@@ -1,3 +1,4 @@
+import numpy as np
 from dataType import point, couple
 
 def isNeed(p1: point, p2: point, d:float):
@@ -6,9 +7,24 @@ def isNeed(p1: point, p2: point, d:float):
     in the same axis that greater than d
     """
     for i in range(p1.dimensi):
-        if (abs(p1.value[i] - p2.value[i]) > d):
+        if (abs(p1.value[i] - p2.value[i]) >= d):
             return False
     return True
+
+def quicksort(points: list[point]):
+    if len(points) <= 1:
+        return points
+    else:
+        pivot = points[0]
+        left_part = np.empty((0), dtype=point)
+        right_part = np.empty((0), dtype=point)
+        for i in range(1, len(points)):
+            if points[i] < pivot:
+                left_part = np.append(left_part, points[i])
+            else:
+                right_part = np.append(right_part, points[i])
+        res = np.concatenate((quicksort(left_part), np.array([pivot]) , quicksort(right_part)))
+        return res
 
 def divideConquer(points : list[point]) -> couple:
     """
@@ -23,7 +39,7 @@ def divideConquer(points : list[point]) -> couple:
         numEuclidean += 1
         return couple(points[0], points[1]), numEuclidean
     
-    elif (n <= 3):
+    elif (n == 3):
         numEuclidean += 3
         Couple1 = couple(points[0], points[1])
         Couple2 = couple(points[1], points[2])
@@ -39,17 +55,18 @@ def divideConquer(points : list[point]) -> couple:
         numEuclidean += (tempNumLeft + tempNumRight)
 
         closestTemp:couple = min(closest_left, closest_right)
-        mid:int = (left_part[-1].value[0] + right_part[0].value[0]) // 2
-
-        for left_point in left_part:
-            if (abs(mid-left_point.value[0]) <= closestTemp.distance) :
-                for right_point in right_part :
-                    if (abs(mid-right_point.value[0]) <= closestTemp.distance) :
-                        if isNeed(left_point, right_point, closestTemp.distance):
-                            numEuclidean += 1
-                            newClosestTemp = couple(left_point, right_point)
-                            if (closestTemp > newClosestTemp) :
-                                closestTemp = newClosestTemp
+        mid:float = (left_part[-1].value[0] + right_part[0].value[0]) / 2
+        dist:float = abs(left_part[-1].value[0] - right_part[0].value[0])
+        if (dist < closestTemp.distance):
+            for left_point in left_part:
+                if (abs(mid-left_point.value[0]) <= closestTemp.distance-(dist/2)) :
+                    for right_point in right_part :
+                        if (abs(mid-right_point.value[0]) <= closestTemp.distance-(dist/2)) :
+                            if isNeed(left_point, right_point, closestTemp.distance):
+                                numEuclidean += 1
+                                newClosestTemp: couple = couple(left_point, right_point)
+                                if (newClosestTemp < closestTemp) :
+                                    closestTemp = newClosestTemp
 
         return closestTemp, numEuclidean
 
