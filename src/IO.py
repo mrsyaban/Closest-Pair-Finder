@@ -52,16 +52,15 @@ class IO :
 
     # print landing page
     def landing(self):
-        print("""
-        (             )    (   (       )     )     )  
-          )\ )       ( /(    )\ ))\ ) ( /(  ( /(  ( /(  
-         (()/(    (  )\())  (()/(()/( )\()) )\()) )\()) 
-          /(_))   )\((_)\    /(_))(_)|(_)\|((_)\ ((_)\  
-         (_))_ _ ((_) ((_)  (_))(_))  _((_)_ ((_)_ ((_) 
-        |   \| | | |/ _ \  | _ \_ _||_  /| |/ /\ \ / / 
-        | |) | |_| | (_) | |   /| |  / /   ' <  \ V /  
-        |___/ \___/ \___/  |_|_\___|/___| _|\_\  |_|   
-        CLOSEST PAIR FINDER==========================""")
+        print('\033[31m'+"        (             )    (   (       )     )     )")  
+        print('\033[31m'+"         )\ )       ( /(    )\ ))\ ) ( /(  ( /(  ( /(  " )
+        print('\033[31m'+"         (()/(    (  )\())  (()/(()/( )\()) )\()) )\()) ")
+        print('\033[31m'+"        /(_))   )\((_)\    /(_))(_)|(_)\|((_)\ ((_)\  ")
+        print('\033[31m'+"        (_))_ _ ((_) ((_)  (_))(_))  _((_)_ ((_)_ ((_) ")
+        print('\033[33m'+"        |   \| | | |/ _ \  | _ \_ _||_  /| |/ /\ \ / / ")
+        print('\033[33m'+"        | |) | |_| | (_) | |   /| |  / /   ' <  \ V /  ")
+        print('\033[33m'+"        |___/ \___/ \___/  |_|_\___|/___| _|\_\  |_|   ")
+        print('\033[33m'+"        CLOSEST PAIR FINDER==========================" + '\033[0m')
 
     # menampilkan hasil
     # result = (n, arrayOfPoint, runtime, closestPair)
@@ -86,23 +85,19 @@ class IO :
         
         
 
-        print(f"""
-                         BRUTE FORCE 
-        ===========================================
-        Closest Pair           : {closestCoupleBF}
-        Distance               : {closestCoupleBF.distance}  
-        Number of Euclidean op : {numBF}
-        Execution Time  (perf) : {stopBF-startBF} detik\n
-        """)
+        print('\033[36m'+"\n                            BRUTE FORCE             ")
+        print('\033[36m'+"        ===========================================")
+        print('\033[36m'+f"        Closest Pair           : {closestCoupleBF}")
+        print('\033[36m'+f"        Distance               : {closestCoupleBF.distance}")  
+        print('\033[36m'+f"        Number of Euclidean op : {numBF}")
+        print('\033[36m'+f"        Execution Time  (perf) : {stopBF-startBF} detik\n")
 
-        print(f"""
-                      DIVIDE AND CONQUER 
-        ===========================================
-        Closest Pair           : {closestCoupleDnC}
-        Distance               : {closestCoupleDnC.distance}
-        Number of Euclidean op : {numDnC}
-        Execution Time (perf)  : {stopDnC-startDnC} detik\n
-        """)
+        print('\033[35m'+"\n                        DIVIDE AND CONQUER         ")
+        print('\033[35m'+"        ===========================================")
+        print('\033[35m'+f"        Closest Pair           : {closestCoupleDnC}")
+        print('\033[35m'+f"        Distance               : {closestCoupleDnC.distance}")
+        print('\033[35m'+f"        Number of Euclidean op : {numDnC}")
+        print('\033[35m'+f"        Execution Time (perf)  : {stopDnC-startDnC} detik\n"+'\033[0m')
 
         if (self.dimensi <= 3):
             self.visualComp1 = points

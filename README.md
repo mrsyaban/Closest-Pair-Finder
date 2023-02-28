@@ -3,9 +3,14 @@
 > Composed to fulfill Tucil 2 IF2211 Strategi Algoritma
 
 ## Program Description
-
+![](test/splash_screen.jpg)
 This program is used for find closest pair from random points generated. Program retrieve number of random points to generate and number of dimension of its points from users. Technically program use `Divide and Conquer` algorithm to find the closest pair, but program use `Brute-Force` algorithm as well as a benchmark. Program use two factor to compare the efficiency of the algorithm: Execution time and number of euclidean operation operated. If number of dimension inputed is lower or equal by three, program can visualize the scattering diagram as well.
 
+## Brute-Force vs Divide-and-Conquer
+![](test/bf_vs_dnc.jpg)
+
+## Visualizer
+![](test/visual.jpg)
 ## Program Structure
 * [bin/](.\Tucil2_13521109-13521119\bin)
   * [.gitignore](.\Tucil2_13521109-13521119\bin\.gitignore)
@@ -29,7 +34,6 @@ This program is used for find closest pair from random points generated. Program
   * [visual.py](.\Tucil2_13521109-13521119\src\visual.py)
 * [test/](.\Tucil2_13521109-13521119\test)
 * [README.md](.\Tucil2_13521109-13521119\README.md)
-
 
 ## Requirement
 

@@ -14,9 +14,9 @@ def display1D(arrayOfPoint : list[point], pair : couple):
     for point in arrayOfPoint:
         xp = point.value[0]
         if (point == pair.point1 or point == pair.point2):
-            plot.scatter(xp, marker='o', c='red')
+            plot.scatter(xp, np.zeros_like(xp), marker='o', c='red')
         else:
-            plot.scatter(xp, marker='o', c='blue')
+            plot.scatter(xp, np.zeros_like(xp), marker='o', c='blue')
 
     plot.set_xlabel('SUMBU-X')
     plt.show()

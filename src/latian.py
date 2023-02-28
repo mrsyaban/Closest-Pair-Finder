@@ -1,14 +1,16 @@
-YELLOW = '\033[33m'
-GREEN = '\033[32m'
-RESET = '\033[0m'
+import matplotlib.pyplot as plt
+import numpy as np
 
-print("""
-(             )    (   (       )     )     )  
-    )\ )       ( /(    )\ ))\ ) ( /(  ( /(  ( /(  
-    (()/(    (  )\())  (()/(()/( )\()) )\()) )\()) 
-    /(_))   )\((_)\    /(_))(_)|(_)\|((_)\ ((_)\  
-    (_))_ _ ((_) ((_)  (_))(_))  _((_)_ ((_)_ ((_) 
-|   \| | | |/ _ \  | _ \_ _||_  /| |/ /\ \ / / 
-| |) | |_| | (_) | |   /| |  / /   ' <  \ V /  
-|___/ \___/ \___/  |_|_\___|/___| _|\_\  |_|   
-CLOSEST PAIR FINDER==========================""")
+# Generate one-dimensional data
+x = np.random.rand(100)
+
+# Create scatter plot
+plt.scatter(x, np.zeros_like(x))
+
+# Set plot title and axis labels
+plt.title('One-dimensional Scatter Plot')
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+
+# Show plot
+plt.show()
