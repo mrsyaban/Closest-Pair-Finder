@@ -64,7 +64,7 @@ class couple:
     
 def getDistance(p : point, q : point, dim : int) -> float:
     """
-    Return Euclidean distance between point p and point q
+    Return absolute Euclidean distance between point p and point q 
     """
     temp : float = 0
     for i in range(dim):

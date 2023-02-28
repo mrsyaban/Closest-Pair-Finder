@@ -9,7 +9,7 @@ def bruteForce(points : list[point]) -> couple:
     using brute force algorithm
     """
     closestPair:couple = couple(points[0], points[1])
-    numEuclidean:int = 1 
+    numEuclidean:int = 0 
     for i in range(len(points)):
         for j in range(i+1, len(points)):
             tempCouple = couple(points[i], points[j])

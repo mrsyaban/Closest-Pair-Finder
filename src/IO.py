@@ -6,7 +6,7 @@ import random as rand
 from visual import display3D, display1D, display2D
 from dataType import point
 from bruteForce import bruteForce
-from divideConquer import divideConquer
+from divideConquer import divideConquer, quicksort
 
 class IO :
 
@@ -72,24 +72,28 @@ class IO :
         for i in range(self.number):
             val = np.empty((self.dimensi), dtype=float)
             for j in range(self.dimensi):
-                val[j] = rand.uniform(-1000, 1000)
+                val[j] = rand.uniform(-10000, 10000)
             points = np.append(points, point(self.dimensi, val))
 
-        startBF = t.time() 
+        startBF = t.perf_counter() 
         closestCoupleBF, numBF = bruteForce(points)
-        stopBF = t.time()
+        stopBF = t.perf_counter()
+       
+        startDnC = t.perf_counter()
+        closestCoupleDnC, numDnC = divideConquer(quicksort(points))
+        stopDnC = t.perf_counter()
+
+        
+        
+
         print(f"""
                          BRUTE FORCE 
         ===========================================
         Closest Pair           : {closestCoupleBF}
         Distance               : {closestCoupleBF.distance}  
         Number of Euclidean op : {numBF}
-        Execution Time         : {stopBF-startBF} detik\n
+        Execution Time  (perf) : {stopBF-startBF} detik\n
         """)
-
-        startDnC = t.time()
-        closestCoupleDnC, numDnC = divideConquer(sorted(points))
-        stopDnC = t.time()
 
         print(f"""
                       DIVIDE AND CONQUER 
@@ -97,7 +101,7 @@ class IO :
         Closest Pair           : {closestCoupleDnC}
         Distance               : {closestCoupleDnC.distance}
         Number of Euclidean op : {numDnC}
-        Execution Time         : {stopDnC-startDnC} detik\n
+        Execution Time (perf)  : {stopDnC-startDnC} detik\n
         """)
 
         if (self.dimensi == 3):
