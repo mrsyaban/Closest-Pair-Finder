@@ -3,26 +3,22 @@ import matplotlib.pyplot as plt
 from dataType import point, couple
 from bruteForce import bruteForce
 
-def display3D(arrayOfPoint : list[point], pair : couple):
+def display1D(arrayOfPoint : list[point], pair : couple):
     """
-    display scatter plot 3D of arrayOfPoint with pair highlighted as red
+    display scatter plot 1D of arrayOfPoint with pair highlighted as red
     """
     fig = plt.figure()
 
-    plot = fig.add_subplot(projection='3d')
+    plot = fig.add_subplot()
     
     for point in arrayOfPoint:
         xp = point.value[0]
-        yp = point.value[1]
-        zp = point.value[2]
         if (point == pair.point1 or point == pair.point2):
-            plot.scatter(xp,yp,zp, marker='o', c='red')
+            plot.scatter(xp, marker='o', c='red')
         else:
-            plot.scatter(xp,yp,zp, marker='o', c='blue')
+            plot.scatter(xp, marker='o', c='blue')
 
     plot.set_xlabel('SUMBU-X')
-    plot.set_ylabel('SUMBU-Y')
-    plot.set_zlabel('SUMBU-Z')
     plt.show()
 
 def display2D(arrayOfPoint : list[point], pair : couple):
@@ -45,24 +41,28 @@ def display2D(arrayOfPoint : list[point], pair : couple):
     plot.set_ylabel('SUMBU-Y')
     plt.show()
 
-def display1D(arrayOfPoint : list[point], pair : couple):
+
+def display3D(arrayOfPoint : list[point], pair : couple):
     """
-    display scatter plot 1D of arrayOfPoint with pair highlighted as red
+    display scatter plot 3D of arrayOfPoint with pair highlighted as red
     """
     fig = plt.figure()
 
-    plot = fig.add_subplot()
+    plot = fig.add_subplot(projection='3d')
     
     for point in arrayOfPoint:
         xp = point.value[0]
+        yp = point.value[1]
+        zp = point.value[2]
         if (point == pair.point1 or point == pair.point2):
-            plot.scatter(xp, marker='o', c='red')
+            plot.scatter(xp,yp,zp, marker='o', c='red')
         else:
-            plot.scatter(xp, marker='o', c='blue')
+            plot.scatter(xp,yp,zp, marker='o', c='blue')
 
     plot.set_xlabel('SUMBU-X')
+    plot.set_ylabel('SUMBU-Y')
+    plot.set_zlabel('SUMBU-Z')
     plt.show()
-
 
 def driver3D():
     A1 : point = point(3, [4,5,6])
