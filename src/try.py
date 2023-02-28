@@ -16,12 +16,12 @@ class App(customtkinter.CTk):
 
         # configure window
         self.title("CustomTkinter complex_example.py")
-        self.geometry(f"{1100}x{580}")
+        self.geometry(f"{1295}x{720}")
 
         # configure grid layout (4x4)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure((2, 3), weight=0)
-        self.grid_rowconfigure((0, 1, 2), weight=1)
+        self.grid_columnconfigure((1,2,3,4,5,6,7), weight=1)
+        # self.grid_columnconfigure((2, 3), weight=0)
+        self.grid_rowconfigure((0,1,2), weight=1)
 
         # create sidebar frame with widgets
         self.sidebar_frame = customtkinter.CTkFrame(self, width=480, corner_radius=0)
@@ -40,10 +40,13 @@ class App(customtkinter.CTk):
         self.label_dimensi.grid(row=3, column=0, padx=15, pady=(0, 5), sticky='e')
         
         self.entry_number = customtkinter.CTkEntry(self.sidebar_frame, placeholder_text="0")
-        self.entry_number.grid(row=2, column=1, padx=(0, 20), pady=(0, 5), sticky="nsew")
+        self.entry_number.grid(row=2, column=1, padx=(0, 30), pady=(0, 5), sticky="nsew")
 
         self.entry_dimensi = customtkinter.CTkEntry(self.sidebar_frame, placeholder_text="3")
-        self.entry_dimensi.grid(row=3, column=1, padx=(0, 20), pady=(0, 5), sticky="nsew")
+        self.entry_dimensi.grid(row=3, column=1, padx=(0, 30), pady=(0, 5), sticky="nsew")
+
+
+        
 
 
         # self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
@@ -61,22 +64,59 @@ class App(customtkinter.CTk):
         # self.scaling_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["80%", "90%", "100%", "110%", "120%"],
         #                                                        command=self.change_scaling_event)
         # self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
-        self.main_frame = customtkinter.CTkFrame(self, corner_radius=0)
-        self.main_frame.grid(row=0, column=1, sticky="s")
-        self.main_frame.grid_rowconfigure(4, weight=1)
+        self.vis_frame = customtkinter.CTkFrame(self, corner_radius=0)
+        self.vis_frame.grid(row=0, column=1, columnspan=6, pady=0)
 
-        self.vis_frame = customtkinter.CTkFrame(self.main_frame, corner_radius=0)
-        self.vis_frame.grid(row=0, column=0, sticky="nswe")
 
-        self.fig = Figure(figsize=(10,7), dpi=100)
+        # self.vis_frame = customtkinter.CTkFrame(self.main_frame, width=820, corner_radius=0)
+        # self.vis_frame.grid(row=0, column=0, sticky="nswe", padx=0, pady=0)
+
+        self.fig = Figure(figsize=(12,5), dpi=100)
         self.ax = self.fig.add_subplot(111, projection='3d')
 
         # Create a canvas to display the plot
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.vis_frame)
         self.canvas.get_tk_widget().pack()
 
-        self.terminal_frame = customtkinter.CTkFrame(self.main_frame, corner_radius=0)
-        self.terminal_frame.grid(row=1, column=0, sticky="nswe")
+        self.terminal_frame = customtkinter.CTkFrame(self, corner_radius=10)
+        self.terminal_frame.grid(row=1, column=1, columnspan=6, pady=0, sticky='nswe')
+        self.terminal_frame.grid_columnconfigure((0,1,2,3,4,5,6,7), weight=1)
+        self.terminal_frame.grid_rowconfigure((0,1,2), weight=1)
+
+        self.bf_label = customtkinter.CTkLabel(self.terminal_frame,  text="Brute Force", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.bf_label.grid(row=0, column=0, columnspan=3, sticky='we', pady=5, padx=5)
+        self.comp_label = customtkinter.CTkLabel(self.terminal_frame,  text="Comparison", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.comp_label.grid(row=0, column=3, columnspan=2, sticky='we', pady=5, padx=5)
+        self.dnc_label = customtkinter.CTkLabel(self.terminal_frame,  text="Divide & Conquer", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.dnc_label.grid(row=0, column=5, columnspan=3, sticky='we', pady=5, padx=5)
+
+        self.bf_frame = customtkinter.CTkFrame(self.terminal_frame, corner_radius=10, fg_color='#ebebeb')
+        self.bf_frame.grid(row=1, column=0, columnspan=3, sticky='nswe', pady=5, padx=5)
+        self.comp_frame = customtkinter.CTkFrame(self.terminal_frame, corner_radius=10, fg_color='#ebebeb')
+        self.comp_frame.grid(row=1, column=3, columnspan=2, sticky='nswe', pady=5, padx=5)
+        self.dnc_frame = customtkinter.CTkFrame(self.terminal_frame, corner_radius=10, fg_color='#ebebeb')
+        self.dnc_frame.grid(row=1, column=5, columnspan=3, sticky='nswe', pady=5, padx=5)
+
+        # self.bf_res = customtkinter.CTkLabel(self, text="Brute Force", font=customtkinter.CTkFont(size=20, weight="bold"))
+        # self.bf_res.grid(row=1, column=1, columnspan=2, sticky='n', pady=0)
+        # self.comp_res = customtkinter.CTkLabel(self, text="Comparison", font=customtkinter.CTkFont(size=20, weight="bold"))
+        # self.comp_res.grid(row=1, column=3, columnspan=2, sticky='n', pady=0)
+        # self.dnc_res = customtkinter.CTkLabel(self, text="Divide & Conquer", font=customtkinter.CTkFont(size=20, weight="bold"))
+        # self.dnc_res.grid(row=1, column=5, columnspan=2, sticky='n', pady=0)
+
+        # self.bf_res = customtkinter.CTkLabel(self, text="Brute Force", font=customtkinter.CTkFont(size=20, weight="bold"))
+        # self.bf_res.grid(row=2, column=1, columnspan=2, sticky='n', pady=0)
+        # self.comp_res = customtkinter.CTkLabel(self, text="Comparison", font=customtkinter.CTkFont(size=20, weight="bold"))
+        # self.comp_res.grid(row=2, column=3, columnspan=2, sticky='n', pady=0)
+        # self.dnc_res = customtkinter.CTkLabel(self, text="Divide & Conquer", font=customtkinter.CTkFont(size=20, weight="bold"))
+        # self.dnc_res.grid(row=2, column=5, columnspan=2, sticky='n', pady=0)
+
+        # self.bf_res = customtkinter.CTkLabel(self, text="Hasil", font=customtkinter.CTkFont(size=20, weight="normal"))
+        # self.bf_res.grid(row=2, column=1, pady=(0,10))
+        # self.comp_res = customtkinter.CTkLabel(self, text="Hasil", font=customtkinter.CTkFont(size=20, weight="normal"))
+        # self.comp_res.grid(row=2, column=2, pady=(0,10))
+        # self.dnc_res = customtkinter.CTkLabel(self, text="Hasil", font=customtkinter.CTkFont(size=20, weight="normal"))
+        # self.dnc_res.grid(row=2, column=3, pady=(0,10))
 
 
 

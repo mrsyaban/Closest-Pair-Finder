@@ -70,6 +70,16 @@ def divideConquer(points : list[point]) -> couple:
 
         return closestTemp, numEuclidean
 
+def isNeed(p1: point, p2: point, d:float):
+    """
+    return False if there is distance between p1 and p2 
+    in the same axis that greater than d
+    """
+    for i in range(p1.dimensi):
+        if (abs(p1.value[i] - p2.value[i]) > d):
+            return False
+    return True
+
 def driver() :
     A1 = point(3,[1,3,6])
     A2 = point(3,[8,1,2])
@@ -83,3 +93,4 @@ def driver() :
     sorted(List)
     nearestCouple = divideConquer(List)
     print("nearest by Divide n Conquer : ", nearestCouple)
+

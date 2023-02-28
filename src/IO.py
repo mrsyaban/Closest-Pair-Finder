@@ -104,7 +104,7 @@ class IO :
         Execution Time (perf)  : {stopDnC-startDnC} detik\n
         """)
 
-        if (self.dimensi == 3):
+        if (self.dimensi <= 3):
             self.visualComp1 = points
             self.visualComp2= closestCoupleDnC
 
