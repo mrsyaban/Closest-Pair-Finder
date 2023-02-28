@@ -5,6 +5,8 @@ import customtkinter
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d import Axes3D
+from IO import IO, t, np, rand, bruteForce, divideConquer, display3D, display1D, display2D
+from dataType import couple, point
 
 customtkinter.set_appearance_mode("Light")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -26,7 +28,7 @@ class App(customtkinter.CTk):
         # create sidebar frame with widgets
         self.sidebar_frame = customtkinter.CTkFrame(self, width=480, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
-        self.sidebar_frame.grid_rowconfigure(4, weight=1)
+        self.sidebar_frame.grid_rowconfigure((4,7), weight=1)
 
         self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="DUO RIZKY", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, columnspan=2, padx=0, pady=(20, 0))
@@ -34,26 +36,34 @@ class App(customtkinter.CTk):
         self.sub_label.grid(row=1, column=0, columnspan=2, padx=0, pady=(0, 20))
 
         self.label_number = customtkinter.CTkLabel(self.sidebar_frame, text="Jumlah Titik :", font=customtkinter.CTkFont(size=14, weight="bold"))
-        self.label_number.grid(row=2, column=0, padx=15, pady=(0, 5), sticky='e')
+        self.label_number.grid(row=2, column=0, padx=(20, 15), pady=(0, 5), sticky='e')
         
         self.label_dimensi = customtkinter.CTkLabel(self.sidebar_frame, text="Jumlah Dimensi :", font=customtkinter.CTkFont(size=14, weight="bold"))
-        self.label_dimensi.grid(row=3, column=0, padx=15, pady=(0, 5), sticky='e')
+        self.label_dimensi.grid(row=3, column=0, padx=(20, 15), pady=(0, 5), sticky='e')
         
         self.entry_number = customtkinter.CTkEntry(self.sidebar_frame, placeholder_text="0")
-        self.entry_number.grid(row=2, column=1, padx=(0, 30), pady=(0, 5), sticky="nsew")
+        self.entry_number.grid(row=2, column=1, padx=(0, 40), pady=(0, 5), sticky="nsew")
 
         self.entry_dimensi = customtkinter.CTkEntry(self.sidebar_frame, placeholder_text="3")
-        self.entry_dimensi.grid(row=3, column=1, padx=(0, 30), pady=(0, 5), sticky="nsew")
+        self.entry_dimensi.grid(row=3, column=1, padx=(0, 40), pady=(0, 5), sticky="nsew")
 
+        self.time_bf_label = customtkinter.CTkLabel(self.sidebar_frame, text="BF Time :", font=customtkinter.CTkFont(size=14, weight="bold"))
+        self.time_bf_label.grid(row=5, column=0, padx=(20, 15), pady=(0, 5), sticky='e')
+        self.time_dnc_label = customtkinter.CTkLabel(self.sidebar_frame, text="DnC Time :", font=customtkinter.CTkFont(size=14, weight="bold"))
+        self.time_dnc_label.grid(row=6, column=0, padx=(20, 15), pady=(0, 5), sticky='e')
 
-        
+        self.timeRes_bf_label = customtkinter.CTkLabel(self.sidebar_frame, text="0 second", font=customtkinter.CTkFont(size=14, weight="normal"))
+        self.timeRes_bf_label.grid(row=5, column=1, padx=(5, 10), pady=(0, 5), sticky='w')
+        self.timeRes_dnc_label = customtkinter.CTkLabel(self.sidebar_frame, text="0 second", font=customtkinter.CTkFont(size=14, weight="normal"))
+        self.timeRes_dnc_label.grid(row=6, column=1, padx=(5, 10), pady=(0, 5), sticky='w')
+
 
 
         # self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
         # self.sidebar_button_1.grid(row=1, column=0, padx=20, pady=10)
 
-        self.run_button = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
-        self.run_button.grid(row=4, column=0, columnspan=2, padx=20, pady=30, sticky="s")
+        self.run_button = customtkinter.CTkButton(self.sidebar_frame, text="Generate & Run", command=self.run)
+        self.run_button.grid(row=8, column=0, columnspan=2, padx=20, pady=30, sticky="s")
         # self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
         # self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
         # self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["Light", "Dark", "System"],
@@ -66,10 +76,6 @@ class App(customtkinter.CTk):
         # self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
         self.vis_frame = customtkinter.CTkFrame(self, corner_radius=0)
         self.vis_frame.grid(row=0, column=1, columnspan=6, pady=0)
-
-
-        # self.vis_frame = customtkinter.CTkFrame(self.main_frame, width=820, corner_radius=0)
-        # self.vis_frame.grid(row=0, column=0, sticky="nswe", padx=0, pady=0)
 
         self.fig = Figure(figsize=(12,5), dpi=100)
         self.ax = self.fig.add_subplot(111, projection='3d')
@@ -97,42 +103,108 @@ class App(customtkinter.CTk):
         self.dnc_frame = customtkinter.CTkFrame(self.terminal_frame, corner_radius=10, fg_color='#ebebeb')
         self.dnc_frame.grid(row=1, column=5, columnspan=3, sticky='nswe', pady=5, padx=5)
 
-        # self.bf_res = customtkinter.CTkLabel(self, text="Brute Force", font=customtkinter.CTkFont(size=20, weight="bold"))
-        # self.bf_res.grid(row=1, column=1, columnspan=2, sticky='n', pady=0)
-        # self.comp_res = customtkinter.CTkLabel(self, text="Comparison", font=customtkinter.CTkFont(size=20, weight="bold"))
-        # self.comp_res.grid(row=1, column=3, columnspan=2, sticky='n', pady=0)
-        # self.dnc_res = customtkinter.CTkLabel(self, text="Divide & Conquer", font=customtkinter.CTkFont(size=20, weight="bold"))
-        # self.dnc_res.grid(row=1, column=5, columnspan=2, sticky='n', pady=0)
+        self.bf_frame.grid_rowconfigure((0), weight=1)
+        self.bf_frame.grid_columnconfigure((0), weight=1)
+        self.bf_result = customtkinter.CTkLabel(self.bf_frame, wraplength=300, text='Hasil Brute Force', font=customtkinter.CTkFont(size=12, weight="normal"))
+        self.bf_result.grid(row=0, column=0, sticky='', pady=10, padx=5)
 
-        # self.bf_res = customtkinter.CTkLabel(self, text="Brute Force", font=customtkinter.CTkFont(size=20, weight="bold"))
-        # self.bf_res.grid(row=2, column=1, columnspan=2, sticky='n', pady=0)
-        # self.comp_res = customtkinter.CTkLabel(self, text="Comparison", font=customtkinter.CTkFont(size=20, weight="bold"))
-        # self.comp_res.grid(row=2, column=3, columnspan=2, sticky='n', pady=0)
-        # self.dnc_res = customtkinter.CTkLabel(self, text="Divide & Conquer", font=customtkinter.CTkFont(size=20, weight="bold"))
-        # self.dnc_res.grid(row=2, column=5, columnspan=2, sticky='n', pady=0)
+        self.dnc_frame.grid_rowconfigure((0), weight=1)
+        self.dnc_frame.grid_columnconfigure((0), weight=1)
+        self.dnc_result = customtkinter.CTkLabel(self.dnc_frame, wraplength=300, text='Hasil Divide & Conquer', font=customtkinter.CTkFont(size=12, weight="normal"))
+        self.dnc_result.grid(row=0, column=0, sticky='', pady=10, padx=5)
 
-        # self.bf_res = customtkinter.CTkLabel(self, text="Hasil", font=customtkinter.CTkFont(size=20, weight="normal"))
-        # self.bf_res.grid(row=2, column=1, pady=(0,10))
-        # self.comp_res = customtkinter.CTkLabel(self, text="Hasil", font=customtkinter.CTkFont(size=20, weight="normal"))
-        # self.comp_res.grid(row=2, column=2, pady=(0,10))
-        # self.dnc_res = customtkinter.CTkLabel(self, text="Hasil", font=customtkinter.CTkFont(size=20, weight="normal"))
-        # self.dnc_res.grid(row=2, column=3, pady=(0,10))
+        self.comp_frame.grid_rowconfigure((0), weight=1)
+        self.comp_frame.grid_columnconfigure((0), weight=1)
+        self.comp_result = customtkinter.CTkLabel(self.comp_frame, wraplength=200, text='Hasil Comparison', font=customtkinter.CTkFont(size=12, weight="normal"))
+        self.comp_result.grid(row=0, column=0, sticky='', pady=10, padx=5)
 
 
+    def run(self):
+        points = np.empty((0), dtype=point)
 
-    def open_input_dialog_event(self):
-        dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="CTkInputDialog")
-        print("CTkInputDialog:", dialog.get_input())
+        for i in range(int(self.entry_number.get())):
+            val = np.empty(int(self.entry_dimensi.get()), dtype=float)
+            for j in range(int(self.entry_dimensi.get())):
+                val[j] = rand.uniform(-1000, 1000)
+            points = np.append(points, point(int(self.entry_dimensi.get()), val))
 
-    def change_appearance_mode_event(self, new_appearance_mode: str):
-        customtkinter.set_appearance_mode(new_appearance_mode)
+        startBF = t.time() 
+        closestCoupleBF, numBF = bruteForce(points)
+        stopBF = t.time()
+        print("Brute Force : ", closestCoupleBF)
+        print("number of euclidean op : ", numBF)
+        print("Waktu BF : ", stopBF-startBF, " detik\n")
 
-    def change_scaling_event(self, new_scaling: str):
-        new_scaling_float = int(new_scaling.replace("%", "")) / 100
-        customtkinter.set_widget_scaling(new_scaling_float)
+        startDnC = t.time()
+        closestCoupleDnC, numDnC = divideConquer(sorted(points))
+        stopDnC = t.time()
+        print("DnC : ", closestCoupleDnC)
+        print("number of Euclidean : ", numDnC)
+        print("Waktu DnC : ", stopDnC-startDnC, " detik")
 
-    def sidebar_button_event(self):
-        print("sidebar_button click")
+        timeDnC = stopDnC-startDnC
+        self.timeRes_dnc_label.configure(text="{:.6f} detik".format(timeDnC))
+        timeBF = stopBF-startBF
+        self.timeRes_bf_label.configure(text="{:.6f} detik".format(timeBF))
+
+        self.display(points, closestCoupleDnC)
+        self.detailResult(closestCoupleDnC, closestCoupleBF, numDnC, numBF, timeDnC, timeBF)
+    
+    def display(self, arrayOfPoint : list[point], pair : couple):
+        if (self.entry_dimensi.get() == "3"):
+            self.ax.clear()
+            self.ax = self.fig.add_subplot(111, projection='3d')
+            for point in arrayOfPoint:
+                xp = point.value[0]
+                yp = point.value[1]
+                zp = point.value[2]
+                if (point == pair.point1 or point == pair.point2):
+                    self.ax.scatter(xp,yp,zp, marker='o', c='red')
+                else:
+                    self.ax.scatter(xp,yp,zp, marker='o', c='blue')
+
+            self.ax.set_xlabel('SUMBU-X')
+            self.ax.set_ylabel('SUMBU-Y')
+            self.ax.set_zlabel('SUMBU-Z')
+
+            self.canvas.draw()
+            
+        elif (self.entry_dimensi.get() == "2"):
+            self.ax.clear()
+            self.ax = self.fig.add_subplot()
+            for point in arrayOfPoint:
+                xp = point.value[0]
+                yp = point.value[1]
+                if (point == pair.point1 or point == pair.point2):
+                    self.ax.scatter(xp,yp, marker='o', c='red')
+                else:
+                    self.ax.scatter(xp,yp, marker='o', c='blue')
+            self.ax.set_xlabel('SUMBU-X')
+            self.ax.set_ylabel('SUMBU-Y')
+
+
+            self.canvas.draw()
+
+        elif (self.entry_dimensi.get() == "1"):
+            self.ax.clear()
+            self.ax = self.fig.add_subplot()
+            static_y = 0
+            for point in arrayOfPoint:
+                xp = point.value[0]
+                if (point == pair.point1 or point == pair.point2):
+                    self.ax.scatter(xp, static_y, marker='o', c='red')
+                else:
+                    self.ax.scatter(xp, static_y, marker='o', c='blue')
+
+            self.ax.set_xlabel('SUMBU-X')
+
+            self.canvas.draw()
+    
+    def detailResult(self, dncPair: couple, bfPair: couple, numDnc: int, numBf: int, timeDnc: float, timeBf: float):
+        self.bf_result.configure(text="Pair : {0}\nNumber of Euclidean : {1}\nEuclidean distance : {2}".format(bfPair, numBf, bfPair.distance))
+        self.dnc_result.configure(text="Pair : {0}\nNumber of Euclidean : {1}\nEuclidean distance : {2}".format(dncPair, numDnc, dncPair.distance))
+        self.comp_result.configure(text="Operation Efficiency : {0} %".format(((numBf-numDnc)/numDnc)*100))
+
 
 
 if __name__ == "__main__":
