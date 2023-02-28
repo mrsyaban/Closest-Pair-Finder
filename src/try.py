@@ -5,6 +5,8 @@ import customtkinter
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d import Axes3D
+from IO import IO, t, np, rand, bruteForce, divideConquer, display3D, display1D, display2D
+from dataType import couple, point
 
 customtkinter.set_appearance_mode("Light")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -60,7 +62,7 @@ class App(customtkinter.CTk):
         # self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
         # self.sidebar_button_1.grid(row=1, column=0, padx=20, pady=10)
 
-        self.run_button = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.run_button = customtkinter.CTkButton(self.sidebar_frame, text="Generate & Run", command=self.run)
         self.run_button.grid(row=8, column=0, columnspan=2, padx=20, pady=30, sticky="s")
         # self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
         # self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
@@ -74,10 +76,6 @@ class App(customtkinter.CTk):
         # self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
         self.vis_frame = customtkinter.CTkFrame(self, corner_radius=0)
         self.vis_frame.grid(row=0, column=1, columnspan=6, pady=0)
-
-
-        # self.vis_frame = customtkinter.CTkFrame(self.main_frame, width=820, corner_radius=0)
-        # self.vis_frame.grid(row=0, column=0, sticky="nswe", padx=0, pady=0)
 
         self.fig = Figure(figsize=(12,5), dpi=100)
         self.ax = self.fig.add_subplot(111, projection='3d')
@@ -121,21 +119,92 @@ class App(customtkinter.CTk):
         self.comp_result.grid(row=0, column=0, sticky='', pady=10, padx=5)
 
 
+    def run(self):
+        points = np.empty((0), dtype=point)
+
+        for i in range(int(self.entry_number.get())):
+            val = np.empty(int(self.entry_dimensi.get()), dtype=float)
+            for j in range(int(self.entry_dimensi.get())):
+                val[j] = rand.uniform(-1000, 1000)
+            points = np.append(points, point(int(self.entry_dimensi.get()), val))
+
+        startBF = t.time() 
+        closestCoupleBF, numBF = bruteForce(points)
+        stopBF = t.time()
+        print("Brute Force : ", closestCoupleBF)
+        print("number of euclidean op : ", numBF)
+        print("Waktu BF : ", stopBF-startBF, " detik\n")
+
+        startDnC = t.time()
+        closestCoupleDnC, numDnC = divideConquer(sorted(points))
+        stopDnC = t.time()
+        print("DnC : ", closestCoupleDnC)
+        print("number of Euclidean : ", numDnC)
+        print("Waktu DnC : ", stopDnC-startDnC, " detik")
+
+        timeDnC = stopDnC-startDnC
+        self.timeRes_dnc_label.configure(text="{:.6f} detik".format(timeDnC))
+        timeBF = stopBF-startBF
+        self.timeRes_bf_label.configure(text="{:.6f} detik".format(timeBF))
+
+        self.display(points, closestCoupleDnC)
+        self.detailResult(closestCoupleDnC, closestCoupleBF, numDnC, numBF, timeDnC, timeBF)
+    
+    def display(self, arrayOfPoint : list[point], pair : couple):
+        if (self.entry_dimensi.get() == "3"):
+            self.ax.clear()
+            self.ax = self.fig.add_subplot(111, projection='3d')
+            for point in arrayOfPoint:
+                xp = point.value[0]
+                yp = point.value[1]
+                zp = point.value[2]
+                if (point == pair.point1 or point == pair.point2):
+                    self.ax.scatter(xp,yp,zp, marker='o', c='red')
+                else:
+                    self.ax.scatter(xp,yp,zp, marker='o', c='blue')
+
+            self.ax.set_xlabel('SUMBU-X')
+            self.ax.set_ylabel('SUMBU-Y')
+            self.ax.set_zlabel('SUMBU-Z')
+
+            self.canvas.draw()
+            
+        elif (self.entry_dimensi.get() == "2"):
+            self.ax.clear()
+            self.ax = self.fig.add_subplot()
+            for point in arrayOfPoint:
+                xp = point.value[0]
+                yp = point.value[1]
+                if (point == pair.point1 or point == pair.point2):
+                    self.ax.scatter(xp,yp, marker='o', c='red')
+                else:
+                    self.ax.scatter(xp,yp, marker='o', c='blue')
+            self.ax.set_xlabel('SUMBU-X')
+            self.ax.set_ylabel('SUMBU-Y')
 
 
-    def open_input_dialog_event(self):
-        dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="CTkInputDialog")
-        print("CTkInputDialog:", dialog.get_input())
+            self.canvas.draw()
 
-    def change_appearance_mode_event(self, new_appearance_mode: str):
-        customtkinter.set_appearance_mode(new_appearance_mode)
+        elif (self.entry_dimensi.get() == "1"):
+            self.ax.clear()
+            self.ax = self.fig.add_subplot()
+            static_y = 0
+            for point in arrayOfPoint:
+                xp = point.value[0]
+                if (point == pair.point1 or point == pair.point2):
+                    self.ax.scatter(xp, static_y, marker='o', c='red')
+                else:
+                    self.ax.scatter(xp, static_y, marker='o', c='blue')
 
-    def change_scaling_event(self, new_scaling: str):
-        new_scaling_float = int(new_scaling.replace("%", "")) / 100
-        customtkinter.set_widget_scaling(new_scaling_float)
+            self.ax.set_xlabel('SUMBU-X')
 
-    def sidebar_button_event(self):
-        print("sidebar_button click")
+            self.canvas.draw()
+    
+    def detailResult(self, dncPair: couple, bfPair: couple, numDnc: int, numBf: int, timeDnc: float, timeBf: float):
+        self.bf_result.configure(text="Pair : {0}\nNumber of Euclidean : {1}\nEuclidean distance : {2}".format(bfPair, numBf, bfPair.distance))
+        self.dnc_result.configure(text="Pair : {0}\nNumber of Euclidean : {1}\nEuclidean distance : {2}".format(dncPair, numDnc, dncPair.distance))
+        self.comp_result.configure(text="Operation Efficiency : {0} %".format(((numBf-numDnc)/numDnc)*100))
+
 
 
 if __name__ == "__main__":
