@@ -50,7 +50,7 @@ This program is used for find closest pair from random points generated. Program
 ## How To Run
 
 1. install customtkinter using `pip install customtkinter` in windows terminal 
-2. type `python3 main.py` in `..\Tucil2_13521109-13521119` directory
+2. type `python3 main.py` or `python3 main.py`  in `..\Tucil2_13521109-13521119\src` directory
 
 ## Author
 | NIM      | Name                   |
