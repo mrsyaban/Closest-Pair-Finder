@@ -46,21 +46,24 @@ class couple:
     def __str__(self):
         # print couple
         res:str = ""
-        for i in range(len(self.point1.value)):
-            if (i == 0):
-                res += "({:.3f}, ".format( self.point1.value[i])
-            elif (i == len(self.point1.value) - 1) :
-                res += "{:.3f})".format(self.point1.value[i])
-            else :
-                res += "{:.3f}, ".format(self.point1.value[i])
-        res += " - "
-        for i in range(len(self.point2.value)):
-            if (i == 0):
-                res += "({:.3f}, ".format(self.point2.value[i])
-            elif (i == len(self.point2.value) - 1) :
-                res += "{:.3f})".format(self.point2.value[i])
-            else :
-                res += "{:.3f}, ".format(self.point2.value[i])
+        if (len(self.point1.value) > 1):
+            for i in range(len(self.point1.value)):
+                if (i == 0):
+                    res += "({:.3f}, ".format( self.point1.value[i])
+                elif (i == len(self.point1.value) - 1) :
+                    res += "{:.3f})".format(self.point1.value[i])
+                else :
+                    res += "{:.3f}, ".format(self.point1.value[i])
+            res += " - "
+            for i in range(len(self.point2.value)):
+                if (i == 0):
+                    res += "({:.3f}, ".format(self.point2.value[i])
+                elif (i == len(self.point2.value) - 1) :
+                    res += "{:.3f})".format(self.point2.value[i])
+                else :
+                    res += "{:.3f}, ".format(self.point2.value[i])
+        else :
+            res += "({:.3f}) - ({:.3f})".format(self.point1.value[0], self.point2.value[0])
         return res
     
 def getDistance(p : point, q : point, dim : int) -> float:

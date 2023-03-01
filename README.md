@@ -27,12 +27,10 @@ This program is used for find closest pair from random points generated. Program
   * [bruteForce.py](.\Tucil2_13521109-13521119\src\bruteForce.py)
   * [dataType.py](.\Tucil2_13521109-13521119\src\dataType.py)
   * [divideConquer.py](.\Tucil2_13521109-13521119\src\divideConquer.py)
-  * [GUI.py](.\Tucil2_13521109-13521119\src\GUI.py)
-  * [latian.py](.\Tucil2_13521109-13521119\src\latian.py)
+  * [IO.py](.\Tucil2_13521109-13521119\src\IO.py)
   * [main.py](.\Tucil2_13521109-13521119\src\main.py)
   * [visual.py](.\Tucil2_13521109-13521119\src\visual.py)
 * [README.md](.\Tucil2_13521109-13521119\README.md)
-
 
 ## Requirement
 
