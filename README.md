@@ -1,4 +1,11 @@
-# Closest Pair Finder
+<div align="center">
+  <h1 align="center">Closest Pair Finder</h1>
+
+  <p align="center">
+    Closest points pair finder for any dimensions!
+    <br />
+  </p>
+</div>
 
 > Composed to fulfill Tucil 2 IF2211 Strategi Algoritma
 <p align="center">
@@ -45,11 +52,11 @@ This program is used for find closest pair from random points generated. Program
 ## Requirement
 
 - python3
-- customtkinter
+- customtkinter version 5.1.2
 
 ## How To Run
 
-1. install customtkinter using `pip install customtkinter` in windows terminal 
+1. install customtkinter using `pip install customtkinter==5.1.2` in `..\Tucil2_13521109-13521119` directory 
 2. type `python3 main.py` or `python3 main.py`  in `..\Tucil2_13521109-13521119\src` directory
 
 ## Author
